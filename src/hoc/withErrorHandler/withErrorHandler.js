@@ -7,22 +7,28 @@ const withErrorHandler = (WrappedComponent, axios) => {
     state = {
       error: null,
     };
-    componentDidMount() {
+
+    componentWillMount() {
       console.log("[withErrorHandler] componentDidMount");
-      axios.interceptors.request.use((req) => {
+      this.reqInterceptor = axios.interceptors.request.use((req) => {//clear errors
         console.log("[withErrorHandler] request");
         this.setState({ error: null });
         return req;
       });
-      axios.interceptors.response.use(
+      this.resInterceptor = axios.interceptors.response.use(//set errors
         (res) => res,
         (error) => {
           console.log("[withErrorHandler] error");
-          //this.setState({ error: error });
+          this.setState({ error: error });
         }
       );
     }
-    errorConfirmedHandler = () => {
+    componentWillUnmount(){
+      console.log("will unmount", this.reqInterceptor, this.resInterceptor);
+      axios.interceptors.request.eject(this.reqInterceptor);
+      axios.interceptors.response.eject(this.resInterceptor);
+    }
+    errorConfirmedHandler = () => {//clear error, user clicked backgdrop
       this.setState({ error: null });
     };
     render() {
