@@ -4,9 +4,7 @@ import Button from "../../UI/Button/Button";
 
 class OrderSummary extends Component {
   //this could be a functional compnenent (dependent on Modal)
-  componentWillUpdate() {
-    console.log("[OrderSummary] updating");
-  }
+  componentWillUpdate() {}
   render() {
     return (
       <Aux>
